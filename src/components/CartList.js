@@ -7,20 +7,18 @@ import { white, red } from '../utils/colors';
 class CartList extends Component {
 
     state = {
-        shoppingList : {
-            data: {
+        shoppingList: {
+            data:  {
                 items: []
             }
-        },
-        total: 0
+        }
     }
 
     componentDidMount() {
         getCartItems()
             .then((shoppingList) => {
-                this.setState({ 
-                    shoppingList,
-                    total: this.calculateTotal(shoppingList.data.items)
+                this.setState({
+                    shoppingList
                 })
             })
     }
@@ -32,7 +30,7 @@ class CartList extends Component {
         }, 0)
     }
 
-    formatList = ({data}) => data.items.map((item) => {
+    formatList = ({ data }) => data.items.map((item) => {
         return {
             key: item.id,
             info: item
@@ -41,13 +39,13 @@ class CartList extends Component {
 
     renderItem = ({ item }) => {
         return (
-            <CartItem item={item} increaseQuantity={this.increaseQuantity} decreaseQuantity={this.decreaseQuantity} deleteItem={this.deleteItem}/>
+            <CartItem item={item} increaseQuantity={this.increaseQuantity} decreaseQuantity={this.decreaseQuantity} deleteItem={this.deleteItem} />
         )
     }
 
     increaseQuantity = (id) => {
         const items = this.state.shoppingList.data.items.map((item) => {
-            if(item.id === id && (item.quantity + 1) <= item.availability) {
+            if (item.id === id && (item.quantity + 1) <= item.availability) {
                 item.quantity++;
             }
             return item;
@@ -57,7 +55,7 @@ class CartList extends Component {
 
     decreaseQuantity = (id) => {
         const items = this.state.shoppingList.data.items.map((item) => {
-            if(item.id === id && (item.quantity - 1) >= 1) {
+            if (item.id === id && (item.quantity - 1) >= 1) {
                 item.quantity--;
             }
             return item;
@@ -76,26 +74,26 @@ class CartList extends Component {
                 data: {
                     items
                 }
-            },
-            total: this.calculateTotal(items)
+            }
         }))
     }
 
     render() {
         const { shoppingList } = this.state;
-        return(
+        const total = this.calculateTotal(shoppingList.data.items);
+        return (
             <View style={styles.container}>
-                {shoppingList.data.items.length > 0 ? 
-                    <FlatList 
+                {shoppingList.data.items.length > 0 ?
+                    <FlatList
                         data={this.formatList(shoppingList)}
                         renderItem={this.renderItem}
                     />
-                : 
-                    <View style={{ alignItems: 'center', marginTop: 10}}>
-                        <Text style={{fontSize: 20}}>Your shopping cart is empty :(</Text>
+                    :
+                    <View style={{ alignItems: 'center', marginTop: 10 }}>
+                        <Text style={{ fontSize: 20 }}>Your shopping cart is empty :(</Text>
                     </View>}
                 <TouchableOpacity style={styles.checkoutBtn}>
-                    <Text style={styles.checkoutLabels}>${Number(this.state.total).toFixed(2)} + IVA!!</Text>
+                    <Text style={styles.checkoutLabels}>${Number(total).toFixed(2)} + IVA!!</Text>
                     <Text style={styles.checkoutLabels}>Checkout ></Text>
                 </TouchableOpacity>
             </View>
