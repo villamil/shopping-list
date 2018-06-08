@@ -1,5 +1,4 @@
-export const getCartItems = () => new Promise ((resolve, reject) => {
-    resolve({
+export const getCartItems = () => Promise.resolve({
         "data": {
             "items": [
                 {
@@ -28,5 +27,4 @@ export const getCartItems = () => new Promise ((resolve, reject) => {
                 }
             ]
         }
-    })
 })
