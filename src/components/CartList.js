@@ -24,9 +24,9 @@ class CartList extends Component {
     }
 
     calculateTotal = (items) => {
-        return items.reduce((prev, curr) => {
-            prev += curr.quantity * curr.price;
-            return prev;
+        return items.reduce((total, item) => {
+            total += item.quantity * item.price;
+            return total;
         }, 0)
     }
 
